@@ -9,9 +9,9 @@ import config from '../../config/config';
 const router = express.Router();
 
 router.route('/sign-in')
-  .get(authCtrl.signIn);
+  .get(passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }), authCtrl.signIn);
 
-router.router('/sign-out')
+router.route('/sign-out')
   .get(authCtrl.signOut)
 
 export default router;

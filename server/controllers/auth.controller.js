@@ -5,19 +5,16 @@ import MSGraph from '../helpers/MSGraph';
 import config from '../../config/config';
 
 function signIn(req, res, next) {
-  passport.authenticate('azuread-openidconnect', { failureRedirect: '/' }),
-    (req, res) => {
-      MSGraph.getUserData(req.user.accessToken, (err, user) => {
-        if (!err) {
-          req.user.profile.displayName = user.body.displayName;
-          req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
-          return res.json(req.user.profile);
-        } else {
-          const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
-          return next(err);
-        }
-      });
+  MSGraph.getUserData(req.user.accessToken, (err, user) => {
+    if (!err) {
+      req.user.profile.displayName = user.body.displayName;
+      req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
+      return res.json(req.user.profile);
+    } else {
+      const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED, true);
+      return next(err);
     }
+  });
 }
 
 function signOut(req, res, next) {
