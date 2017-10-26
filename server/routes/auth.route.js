@@ -14,4 +14,7 @@ router.route('/sign-in')
 router.route('/authorized')
   .get(authCtrl.authorizedCallback)
 
+router.route('/token')
+  .get(authCtrl.token)
+
 export default router;
