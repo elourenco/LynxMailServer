@@ -5,6 +5,18 @@ import MSGraph from '../helpers/MSGraph';
 import config from '../../config/config';
 
 function signIn(req, res, next) {
+  
+}
+
+function signOut(req, res, next) {
+  req.session.destroy(() => {
+    req.logOut();
+    res.clearCookie('graphNodeCookie');
+    res.status(200);
+  });
+}
+
+function token(req, res, next) {
   MSGraph.getUserData(req.user.accessToken, (err, user) => {
     if (!err) {
       req.user.profile.displayName = user.body.displayName;
@@ -17,12 +29,8 @@ function signIn(req, res, next) {
   });
 }
 
-function signOut(req, res, next) {
-  req.session.destroy(() => {
-    req.logOut();
-    res.clearCookie('graphNodeCookie');
-    res.status(200);
-  });
+function signError(req, res, next) {
+  res.json('Error SignError');
 }
 
-export default { signIn, signOut };
+export default { signIn, signOut, signError, token };

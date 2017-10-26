@@ -6,7 +6,9 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
+import uuid from 'uuid';
 import httpStatus from 'http-status';
+import expressSession from 'express-session';
 import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import helmet from 'helmet';
@@ -45,7 +47,7 @@ passport.deserializeUser((id, done) => {
 if (config.env === 'development') {
   app.use(logger('dev'));
 }
-
+app.use(expressSession({ secret: 'SECRET' }));
 app.use(passport.initialize());
 app.use(passport.session())
 app.use(bodyParser.json());
@@ -80,11 +82,6 @@ app.use((err, req, res, next) => {
     const apiError = new APIError(err.message, err.status, err.isPublic);
     return next(apiError);
   }
-  return next(err);
-});
-
-app.use((req, res, next) => {
-  const err = new APIError('API not found', httpStatus.NOT_FOUND);
   return next(err);
 });
 
