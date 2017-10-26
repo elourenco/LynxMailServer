@@ -46,17 +46,17 @@ if (config.env === 'development') {
   app.use(logger('dev'));
 }
 
+app.use(passport.initialize());
+app.use(passport.session())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
 // app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon.ico')));
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../server/public')));
 app.use(helmet());
 app.use(cors());
-app.use(passport.initialize());
-app.use(passport.session())
 
 if (config.env === 'development') {
   expressWinston.requestWhitelist.push('body');
