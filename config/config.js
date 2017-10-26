@@ -24,7 +24,16 @@ const envVarsSchema = Joi.object({
     .default(4040),
   JWT_SECRET: Joi.string()
     .required()
-    .description('JWT Secret required to sign')
+    .description('JWT Secret required to sign'),
+  MS_REDIRECT_URL: Joi.string()
+    .required()
+    .description('Required Microsoft RedirectTo URL'),
+  MS_CLIENT_ID: Joi.string()
+    .required()
+    .description('Required Microsoft clientID URL'),
+  MS_SECRET_ID: Joi.string()
+    .required()
+    .description('Required Microsoft secretId URL')
 }).unknown()
   .required();
 
@@ -42,7 +51,18 @@ if (error) {
 const config = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  jwtSecret: envVars.JWT_SECRET
+  jwtSecret: envVars.JWT_SECRET,
+  credsOIDCStrategy:{
+    redirectUrl: envVars.MS_REDIRECT_URL,
+    clientID: envVars.MS_CLIENT_ID,
+    clientSecret: envVars.MS_SECRET_ID,
+    identityMetadata: 'https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration',
+    allowHttpForRedirectUrl: true, // For development only
+    responseType: 'code',
+    validateIssuer: false, // For development only
+    responseMode: 'query',
+    scope: ['User.Read', 'Mail.Send', 'Files.ReadWrite']
+  }
 };
 
 export default config;
