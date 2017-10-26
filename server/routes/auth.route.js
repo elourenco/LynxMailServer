@@ -9,12 +9,9 @@ import config from '../../config/config';
 const router = express.Router();
 
 router.route('/sign-in')
-  .get(authCtrl.redirectSignIn);
+  .get(authCtrl.signIn);
 
-router.route('/authorized')
-  .get(authCtrl.authorizedCallback)
-
-router.route('/token')
-  .get(authCtrl.token)
+router.router('/sign-out')
+  .get(authCtrl.signOut)
 
 export default router;
