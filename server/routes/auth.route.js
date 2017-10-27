@@ -1,18 +1,20 @@
-import express from 'express';
-import validate from 'express-validation';
-import expressJwt from 'express-jwt';
-import paramValidation from '../../config/param-validation';
-import passport from 'passport';
-import authCtrl from '../controllers/auth.controller';
-import config from '../../config/config';
+'use strict';
+
+const express = require('express');
+const validate = require('express-validation');
+const expressJwt = require('express-jwt');
+const paramValidation = require('../../config/param-validation');
+const passport = require('passport');
+const authCtrl = require('../controllers/auth.controller');
+const config = require('../../config/config');
 
 const router = express.Router();
 
 router.route('/sign-in')
-  .get(passport.authenticate('azuread-openidconnect', { failureRedirect: '/api/auth/sign-error' }), authCtrl.signIn);
+  .get(passport.authenticate(config.strategyOutlook, { failureRedirect: '/api/auth/sign-error' }), authCtrl.signIn);
 
 router.route('/token')
-  .get(passport.authenticate('azuread-openidconnect', { failureRedirect: '/api/auth/sign-error' }), authCtrl.token);
+  .get(passport.authenticate(config.strategyOutlook, { failureRedirect: '/api/auth/sign-error' }), authCtrl.token);
 
 router.route('/sign-out')
   .get(authCtrl.signOut);
@@ -20,4 +22,4 @@ router.route('/sign-out')
 router.route('/sign-error')
   .get(authCtrl.signError);
 
-export default router;
+module.exports = router;

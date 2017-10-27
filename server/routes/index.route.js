@@ -1,5 +1,7 @@
-import express from 'express';
-import authRoutes from './auth.route';
+'use strict';
+
+const express = require('express');
+const authRoutes = require('./auth.route');
 
 const router = express.Router();
 
@@ -11,4 +13,4 @@ router.get('/status-server', (req, res) =>
 // mount auth routes at /auth
 router.use('/auth', authRoutes);
 
-export default router;
+module.exports = router;

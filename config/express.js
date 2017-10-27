@@ -1,26 +1,28 @@
-import express from 'express';
-import logger from 'morgan';
-import path from 'path';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import compress from 'compression';
-import methodOverride from 'method-override';
-import cors from 'cors';
-import uuid from 'uuid';
-import httpStatus from 'http-status';
-import expressSession from 'express-session';
-import expressWinston from 'express-winston';
-import expressValidation from 'express-validation';
-import helmet from 'helmet';
-import winstonInstance from './winston';
-import passport from 'passport';
-import { OIDCStrategy } from 'passport-azure-ad';
-import favicon from 'serve-favicon';
+'use strict';
+
+const express = require('express');
+const logger = require('morgan');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const compress = require('compression');
+const methodOverride = require('method-override');
+const cors = require('cors');
+const uuid = require('uuid');
+const httpStatus = require('http-status');
+const expressSession = require('express-session');
+const expressWinston = require('express-winston');
+const expressValidation = require('express-validation');
+const helmet = require('helmet');
+const winstonInstance = require('./winston');
+const passport = require('passport');
+const { OIDCStrategy } = require('passport-azure-ad');
+const favicon = require('serve-favicon');
 
 
-import routes from '../server/routes/index.route';
-import config from './config';
-import APIError from '../server/helpers/APIError';
+const routes = require('../server/routes/index.route');
+const config = require('./config');
+const APIErrorHelper = require('../server/helpers/error.helper');
 
 const app = express();
 const users = {};
@@ -76,11 +78,11 @@ app.use('/api', routes);
 app.use((err, req, res, next) => {
   if (err instanceof expressValidation.ValidationError) {
     const unifiedErrorMessage = err.errors.map(error => error.messages.join('. ')).join(' and ');
-    const error = new APIError(unifiedErrorMessage, err.status, true);
+    const error = new ErrorHelper(unifiedErrorMessage, err.status, true);
     return next(error);
-  } else if (!(err instanceof APIError)) {
-    const apiError = new APIError(err.message, err.status, err.isPublic);
-    return next(apiError);
+  } else if (!(err instanceof Helper)) {
+    const error = new ErrorHelper(err.message, err.status, err.isPublic);
+    return next(error);
   }
   return next(err);
 });
@@ -98,4 +100,4 @@ app.use((err, req, res, next) =>
   })
 );
 
-export default app;
+module.exports = app;

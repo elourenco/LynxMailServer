@@ -1,6 +1,8 @@
-import Joi from 'joi';
+'use strict';
 
-export default {
+const Joi = require('joi');
+
+module.exports = {
   // POST /api/users
   createUser: {
     body: {

@@ -1,4 +1,6 @@
-import Joi from 'joi';
+'use strict';
+
+const Joi = require('joi');
 // MONGOOSE_DEBUG: Joi.boolean()
 // .when('NODE_ENV', {
 //   is: Joi.string().equal('development'),
@@ -53,6 +55,7 @@ const config = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   jwtSecret: envVars.JWT_SECRET,
+  strategyOutlook: 'azuread-openidconnect',
   credsOIDCStrategy:{
     redirectUrl: envVars.MS_REDIRECT_URL,
     clientID: envVars.MS_CLIENT_ID,
@@ -62,8 +65,8 @@ const config = {
     responseType: 'code',
     validateIssuer: false, // For development only
     responseMode: 'query',
-    scope: ['User.Read', 'Mail.Send', 'Files.ReadWrite']
+    scope: ['User.Read', 'Mail.Send', 'Mail.Read', 'Files.ReadWrite']
   }
 };
 
-export default config;
+module.exports = config;
