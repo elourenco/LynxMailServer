@@ -1,3 +1,16 @@
 {
-  "git.ignoreLimitWarning": true
+  "editor.fontFamily": "Fira Code",
+  "editor.fontSize": 15,
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": false,
+  "editor.lineNumbers": "on",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": false,
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "Dracula",
+  "terminal.integrated.fontFamily": "Fira Code",
+  "terminal.integrated.fontSize": 16,
+  "editor.minimap.enabled": false,
+  "editor.autoIndent": true
 }
