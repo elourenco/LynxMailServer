@@ -19,25 +19,26 @@ function signOut(req, res, next) {
 }
 
 function token(req, res, next) {
-  MSGraph.getUserData(req.user.accessToken, (err, user) => {
-    if (!err) {
-      req.user.profile.displayName = user.body.displayName;
-      req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
-      return res.json(req.user.profile);
-    } else {
-      const err = new ErrorHelper('Authentication error', httpStatus.UNAUTHORIZED, true);
-      return next(err);
-    }
-  });
+  MSGraph.getUserData(req.user.accessToken)
+    .then(user => {
+      if (!err) {
+        req.user.profile.displayName = user.body.displayName;
+        req.user.profile.emails = [{ address: user.body.mail || user.body.userPrincipalName }];
+        return res.json(req.user.profile);
+      } else {
+        const err = new ErrorHelper('Authentication error', httpStatus.UNAUTHORIZED, true);
+        return next(err);
+      }
+    });
 }
 
 function signError(req, res, next) {
   res.json('Error SignError');
 }
 
-module.exports =  { 
-  signIn, 
-  signOut, 
-  signError, 
-  token 
+module.exports = {
+  signIn,
+  signOut,
+  signError,
+  token
 };
